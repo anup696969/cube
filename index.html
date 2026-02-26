@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CubeSolve — Rubik's Cube Solver</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="light">
+
+  <header>
+    <div class="logo">Cube<span>Solve</span></div>
+
+    <!-- Vertical sliding cube size selector -->
+    <div class="cube-nav">
+      <span class="cube-nav-label">Cube</span>
+      <div class="cube-nav-trigger" id="cubeNavTrigger">3×3</div>
+      <div class="size-track">
+        <div class="size-thumb" id="sizeThumb"></div>
+        <button class="size-opt" data-n="2">2×2</button>
+        <button class="size-opt" data-n="3">3×3</button>
+        <button class="size-opt" data-n="4">4×4</button>
+        <button class="size-opt" data-n="5">5×5</button>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <span class="size-badge" id="sizeBadge">3×3</span>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="theme-icon sun">☀</span>
+        <span class="theme-icon moon">☽</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <aside class="left-col">
+      <div class="panel">
+
+        <div class="panel-title">① Select Color</div>
+        <div class="palette" id="palette">
+          <div class="color-swatch active" data-color="W" style="background:#f0f0f0;border:3px solid #bbb" title="White"></div>
+          <div class="color-swatch" data-color="Y" style="background:#f6ff00" title="Yellow"></div>
+          <div class="color-swatch" data-color="R" style="background:#e63946" title="Red"></div>
+          <div class="color-swatch" data-color="O" style="background:#ff6f00" title="Orange"></div>
+          <div class="color-swatch" data-color="B" style="background:#001ced" title="Blue"></div>
+          <div class="color-swatch" data-color="G" style="background:#0cf600" title="Green"></div>
+        </div>
+
+        <hr class="divider">
+        <div class="panel-title">② Paint Each Face <span class="hint">(centers fixed on odd sizes)</span></div>
+
+        <div class="faces-cross" id="facesCross">
+          <div class="cross-row top-row" id="topRow">
+            <div class="face-cell">
+              <div class="face-label">Top (U)</div>
+              <div class="cube-face" id="face-U"></div>
+            </div>
+          </div>
+          <div class="cross-row mid-row">
+            <div class="face-cell">
+              <div class="face-label">Left (L)</div>
+              <div class="cube-face" id="face-L"></div>
+            </div>
+            <div class="face-cell">
+              <div class="face-label">Front (F)</div>
+              <div class="cube-face" id="face-F"></div>
+            </div>
+            <div class="face-cell">
+              <div class="face-label">Right (R)</div>
+              <div class="cube-face" id="face-R"></div>
+            </div>
+            <div class="face-cell">
+              <div class="face-label">Back (B)</div>
+              <div class="cube-face" id="face-B"></div>
+            </div>
+          </div>
+          <div class="cross-row bot-row" id="botRow">
+            <div class="face-cell">
+              <div class="face-label">Bottom (D)</div>
+              <div class="cube-face" id="face-D"></div>
+            </div>
+          </div>
+        </div>
+
+        <hr class="divider">
+        <div class="controls">
+          <button class="btn btn-primary" id="solveBtn">⚡ Solve</button>
+          <button class="btn btn-outline" id="scrambleBtn">🔀 Scramble</button>
+          <button class="btn btn-danger"  id="resetBtn">↺ Reset</button>
+        </div>
+
+      </div>
+    </aside>
+
+    <section class="right-col">
+      <div class="panel viewer-panel">
+        <div class="viewer-header">
+          <div class="panel-title" style="margin:0">3D Preview</div>
+          <div class="rotation-controls">
+            <button class="rot-btn" id="rotL">◀</button>
+            <button class="rot-btn" id="rotU">▲</button>
+            <button class="rot-btn" id="rotD">▼</button>
+            <button class="rot-btn" id="rotR">▶</button>
+            <button class="rot-btn" id="rotReset">⊙</button>
+          </div>
+        </div>
+        <div class="canvas-wrap">
+          <canvas id="threeCanvas"></canvas>
+          <div class="canvas-hint">Drag to rotate</div>
+        </div>
+      </div>
+
+      <div class="panel solution-panel">
+        <div class="panel-title">Solution</div>
+        <div class="solution-box" id="solutionBox">
+          <span class="muted">Paint your cube and press ⚡ Solve.</span>
+        </div>
+        <div id="statusLine"></div>
+        <div class="step-counter" id="stepCounter"></div>
+        <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+        <div class="anim-controls">
+          <button class="btn btn-primary" id="playBtn"    disabled>▶ Play</button>
+          <button class="btn btn-outline" id="pauseBtn"   disabled>⏸ Pause</button>
+          <button class="btn btn-outline" id="stepFwdBtn" disabled>⏭ Step</button>
+          <button class="btn btn-outline" id="rewBtn"     disabled>⏮ Rewind</button>
+          <div class="speed-wrap">
+            <span class="speed-label">Speed</span>
+            <input type="range" id="speedRange" min="1" max="10" value="5">
+          </div>
+        </div>
+        <hr class="divider">
+        <div class="panel-title" style="margin-bottom:8px">Notation Guide</div>
+        <div class="legend">
+          <span class="leg">F · Front</span><span class="leg">B · Back</span>
+          <span class="leg">U · Up</span><span class="leg">D · Down</span>
+          <span class="leg">L · Left</span><span class="leg">R · Right</span>
+          <span class="leg">X' · CCW</span><span class="leg">X2 · 180°</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cubejs/lib/cube.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
