@@ -15,21 +15,13 @@
   <header>
     <div class="logo">Cube<span>Solve</span></div>
 
-    <!-- Vertical sliding cube size selector -->
-    <div class="cube-nav">
-      <span class="cube-nav-label">Cube</span>
-      <div class="cube-nav-trigger" id="cubeNavTrigger">3×3</div>
-      <div class="size-track">
-        <div class="size-thumb" id="sizeThumb"></div>
-        <button class="size-opt" data-n="2">2×2</button>
-        <button class="size-opt" data-n="3">3×3</button>
-        <button class="size-opt" data-n="4">4×4</button>
-        <button class="size-opt" data-n="5">5×5</button>
-      </div>
+    <!-- Cube size selector -->
+    <div class="cube-nav" id="cubeNav">
+      <button class="size-tab" data-n="2" id="tab2">2×2</button>
+      <button class="size-tab active" data-n="3" id="tab3">3×3</button>
     </div>
 
     <div class="header-right">
-      <span class="size-badge" id="sizeBadge">3×3</span>
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
         <span class="theme-icon sun">☀</span>
         <span class="theme-icon moon">☽</span>
@@ -90,7 +82,6 @@
         <hr class="divider">
         <div class="controls">
           <button class="btn btn-primary" id="solveBtn">⚡ Solve</button>
-          <button class="btn btn-outline" id="scrambleBtn">🔀 Scramble</button>
           <button class="btn btn-danger"  id="resetBtn">↺ Reset</button>
         </div>
 
@@ -132,6 +123,11 @@
             <span class="speed-label">Speed</span>
             <input type="range" id="speedRange" min="1" max="10" value="5">
           </div>
+        </div>
+        <hr class="divider">
+        <div class="panel-title" style="margin-bottom:8px">Move Controls <span class="hint">(click to animate)</span></div>
+        <div class="move-controls-grid" id="moveControlsGrid">
+          <!-- rows injected by JS -->
         </div>
         <hr class="divider">
         <div class="panel-title" style="margin-bottom:8px">Notation Guide</div>
