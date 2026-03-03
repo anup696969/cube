@@ -37,83 +37,26 @@ header{
 .logo{font-size:1.4rem;font-weight:800;letter-spacing:-.05em;flex-shrink:0}
 .logo span{color:var(--accent)}
 
-/* ── Vertical sliding selector ── */
+/* ── Size tab nav ── */
 .cube-nav{
-  display:flex;align-items:center;gap:10px;flex-shrink:0;
-  position:relative;
+  display:flex;align-items:center;gap:4px;flex-shrink:0;
+  background:var(--bg2);border:1.5px solid var(--border);
+  border-radius:10px;padding:3px;
 }
-.cube-nav-label{
-  font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--text2);white-space:nowrap;cursor:default;
+.size-tab{
+  font-family:'Syne',sans-serif;font-weight:700;font-size:.78rem;
+  padding:5px 14px;border:none;background:transparent;
+  color:var(--text2);cursor:pointer;border-radius:7px;
+  transition:background .18s, color .18s;white-space:nowrap;
 }
-
-/* Trigger pill — always visible, shows active size */
-.cube-nav-trigger{
-  font-family:'Syne',sans-serif;font-weight:700;font-size:.75rem;
-  padding:5px 12px;border-radius:9px;border:1.5px solid var(--border);
-  background:var(--bg2);color:var(--text);cursor:pointer;
-  white-space:nowrap;transition:background .18s,border-color .18s;
-  display:flex;align-items:center;gap:6px;
+.size-tab:hover{color:var(--text);background:var(--surface2)}
+.size-tab.active{
+  background:var(--btn-bg);color:var(--btn-text);
+  box-shadow:0 1px 5px rgba(0,0,0,.18);
 }
-.cube-nav-trigger::after{
-  content:'▾';font-size:.65rem;color:var(--text2);
-  transition:transform .22s;
-}
-.cube-nav:hover .cube-nav-trigger::after{ transform:rotate(180deg); }
-.cube-nav-trigger:hover,
-.cube-nav:hover .cube-nav-trigger{
-  background:var(--surface2);border-color:var(--text2);
-}
-
-/* The pill-track — hidden by default, drops down on hover */
-.size-track{
-  position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);
-  display:flex;flex-direction:column;
-  background:var(--surface);border:1.5px solid var(--border);
-  border-radius:12px;padding:3px;gap:1px;
-  width:70px;
-  box-shadow:var(--sh);
-  z-index:500;
-  /* Hidden state */
-  opacity:0;
-  pointer-events:none;
-  transform:translateX(-50%) translateY(-6px);
-  transition:opacity .2s ease, transform .2s ease;
-}
-.cube-nav:hover .size-track{
-  opacity:1;
-  pointer-events:auto;
-  transform:translateX(-50%) translateY(0);
-}
-
-/* Sliding highlight — JS moves it by setting top */
-.size-thumb{
-  position:absolute;left:3px;right:3px;
-  border-radius:8px;
-  background:var(--btn-bg);
-  transition:top .22s cubic-bezier(.4,0,.2,1), height .22s;
-  pointer-events:none;
-  z-index:0;
-}
-
-.size-opt{
-  font-family:'Syne',sans-serif;font-weight:700;font-size:.75rem;
-  padding:6px 0;width:100%;border:none;background:transparent;
-  color:var(--text2);cursor:pointer;border-radius:8px;
-  position:relative;z-index:1;
-  text-align:center;line-height:1;
-  transition:color .15s;
-}
-.size-opt:hover{color:var(--text)}
-.size-opt.active{color:var(--btn-text)}
 
 /* ── right side ── */
 .header-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.size-badge{
-  font-family:'DM Mono',monospace;font-size:.68rem;font-weight:500;
-  color:var(--text2);background:var(--bg2);border:1px solid var(--border);
-  border-radius:6px;padding:3px 9px;letter-spacing:.06em;white-space:nowrap;
-}
 .theme-toggle{
   width:52px;height:28px;background:var(--surface2);
   border:1.5px solid var(--border);border-radius:999px;
@@ -282,6 +225,31 @@ main{
 input[type=range]{width:80px;accent-color:var(--accent);cursor:pointer}
 
 /* ══════════════════════════════════════════
+   MOVE CONTROLS
+══════════════════════════════════════════ */
+.move-controls-grid{display:flex;flex-direction:column;gap:6px}
+.move-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.move-row-label{
+  font-family:'DM Mono',monospace;font-size:.65rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--text2);
+  min-width:22px;flex-shrink:0;
+}
+.move-btn{
+  font-family:'DM Mono',monospace;font-weight:600;font-size:.74rem;
+  padding:5px 11px;border-radius:7px;border:1.5px solid var(--border);
+  background:var(--surface2);color:var(--text);cursor:pointer;
+  transition:all .16s;white-space:nowrap;user-select:none;
+  min-width:42px;text-align:center;
+}
+.move-btn:hover{background:var(--btn-bg);color:var(--btn-text);border-color:var(--btn-bg);transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.2)}
+.move-btn:active{transform:translateY(0);box-shadow:none}
+.move-btn.move-btn-prime{color:var(--accent);border-color:var(--accent)}
+.move-btn.move-btn-prime:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.move-btn.move-btn-double{color:var(--accent2);border-color:#b8860b}
+.move-btn.move-btn-double:hover{background:var(--accent2);color:#111;border-color:var(--accent2)}
+.move-btn:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ══════════════════════════════════════════
    LEGEND + DIVIDER
 ══════════════════════════════════════════ */
 .legend{display:flex;flex-wrap:wrap;gap:5px}
@@ -292,12 +260,74 @@ hr.divider{height:1.5px;background:var(--border);border:none;margin:18px 0;borde
 /* ══════════════════════════════════════════
    RESPONSIVE
 ══════════════════════════════════════════ */
-@media(max-width:860px){.cube-nav{display:none}}
-@media(max-width:700px){
-  header{padding:0 14px;gap:10px}
-  main{padding:14px 12px 48px;gap:14px}
-  .panel{padding:15px 13px}
-  .canvas-wrap{height:250px}
-  .size-badge{display:none}
+
+/* Tablet */
+@media(max-width:1040px){
+  main{grid-template-columns:1fr}
 }
-@media(max-width:460px){.canvas-wrap{height:210px}}
+
+/* Small tablet / large phone */
+@media(max-width:700px){
+  header{padding:0 14px;gap:8px;height:56px}
+  .logo{font-size:1.15rem}
+    main{padding:12px 12px 48px;gap:14px}
+  .panel{padding:15px 13px}
+  .canvas-wrap{height:260px}
+  .btn{padding:8px 13px;font-size:.74rem}
+}
+
+/* Phone — cube-nav wraps to second row */
+@media(max-width:520px){
+  header{
+    flex-wrap:wrap;
+    height:auto;
+    padding:10px 14px 8px;
+    gap:6px;
+  }
+  .logo{flex:1;min-width:0}
+  .header-right{order:1}
+  .cube-nav{
+    order:2;
+    width:100%;
+    justify-content:center;
+    border-radius:9px;
+    padding:3px;
+  }
+  .size-tab{
+    flex:1;
+    text-align:center;
+    padding:7px 0;
+    font-size:.82rem;
+  }
+  main{padding:10px 10px 48px;gap:12px}
+  .canvas-wrap{height:230px}
+  .rotation-controls{gap:5px}
+  .rot-btn{width:28px;height:28px;font-size:11px}
+  .anim-controls{gap:6px}
+}
+
+/* Very small phone */
+@media(max-width:380px){
+  .canvas-wrap{height:200px}
+  .btn{padding:7px 10px;font-size:.71rem}
+  .palette{gap:6px}
+  .color-swatch{width:34px;height:34px}
+}
+
+/* Unpainted cell pulse animation */
+@keyframes pulse-red {
+  0%,100% { outline-color: #e63946; }
+  50%      { outline-color: #ff8c94; }
+}
+
+/* Unpainted cubie — dashed border to make it obvious */
+.cubie.unpainted {
+  background: repeating-linear-gradient(
+    45deg,
+    #d0d0d0,
+    #d0d0d0 4px,
+    #e8e8e8 4px,
+    #e8e8e8 8px
+  ) !important;
+  border: 2px dashed #aaa !important;
+}
